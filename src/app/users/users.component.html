@@ -1,0 +1,122 @@
+<main>
+  <app-sidebar />
+
+  <section class="ml-56 p-10">
+    <div class="flex items-center justify-between mb-10">
+      <app-title title="Manage Users" subtitle="Manage all users here" />
+      <button class="btn btn-primary flex items-center" (click)="handleClick()">
+        <ng-icon name="matPlusOutline" class="text-white text-lg" />
+        <span> Add User </span>
+      </button>
+    </div>
+
+    <div class="flex items-center justify-between mb-10">
+      <div role="tablist" class="tabs tabs-md tabs-boxed">
+        <a
+          role="tab"
+          class="tab text-gray-800"
+          [ngClass]="{ 'tab-active': activeTab === '' }"
+          (click)="changeActiveTab('')"
+          >All</a
+        >
+        <a
+          role="tab"
+          class="tab text-gray-800"
+          [ngClass]="{ 'tab-active': activeTab === 'SUPERADMIN' }"
+          (click)="changeActiveTab('SUPERADMIN')"
+          >Superadmin</a
+        >
+        <a
+          role="tab"
+          class="tab text-gray-800"
+          [ngClass]="{ 'tab-active': activeTab === 'ADMIN' }"
+          (click)="changeActiveTab('ADMIN')"
+          >Admin</a
+        >
+      </div>
+      <label
+        class="input input-md input-bordered flex items-center gap-2 text-gray-600"
+      >
+        <input
+          type="text"
+          class="grow focus:outline-none focus:border-transparent"
+          placeholder="Search"
+          (input)="onSearch($event)"
+        />
+        <ng-icon
+          name="matSearchOutline"
+          class="text-gray-600 w-5 h-5"
+        ></ng-icon>
+      </label>
+    </div>
+
+    @if (users.length === 0) {
+    <app-no-result text="No Users Available" />
+    } @else {
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Employee ID</th>
+          <th>Role</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        @for (user of users; track $index) {
+        <tr>
+          <td>
+            <div class="flex items-center gap-3">
+              <div class="avatar">
+                <div class="mask mask-squircle w-12 h-12">
+                  <img src="assets/profile.png" alt="Account profile" />
+                </div>
+              </div>
+              <h4 class="font-medium">{{ user.name }}</h4>
+            </div>
+          </td>
+          <td>{{ user.employeeId }}</td>
+          <td>{{ user.role }}</td>
+          <td>
+            @if (user.active) {
+            <div class="badge text-xs flex gap-1 items-center">
+              <span class="h-2 w-2 bg-green-500 rounded-full"></span>
+              <span class="">Active</span>
+            </div>
+            } @else {
+            <div class="badge text-xs flex gap-1 items-center">
+              <span class="h-2 w-2 bg-gray-500 rounded-full"></span>
+              <span class="">Disabled</span>
+            </div>
+            }
+          </td>
+          <td>
+            <div class="flex items-center gap-3">
+              <div
+                (click)="openEditUser(user.id)"
+                class="flex items-center justify-center h-8 w-8 rounded-full bg-blue-100 hover:bg-blue-200 hover:cursor-pointer"
+              >
+                <ng-icon name="matEdit" class="text-blue-800" />
+              </div>
+              <div
+                (click)="openDeleteUser(user.id)"
+                class="flex items-center justify-center h-8 w-8 rounded-full bg-red-100 hover:bg-red-200 hover:cursor-pointer"
+              >
+                <ng-icon name="matDelete" class="text-red-800" />
+              </div>
+            </div>
+          </td>
+
+          <app-delete-user [id]="user.id" (delete)="deleteUser(user.id)" />
+          <app-edit-user [user]="user" (success)="getAllUsers()" />
+        </tr>
+        }
+      </tbody>
+    </table>
+    }
+  </section>
+</main>
+
+<app-add-user (success)="getAllUsers()" />

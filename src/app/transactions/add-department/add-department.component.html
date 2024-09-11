@@ -1,0 +1,59 @@
+<dialog id="add-department" class="modal">
+  <form class="modal-box" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <h3 class="font-bold text-gray-800 text-lg">Add Department</h3>
+
+    <div class="w-full mt-5">
+      <div class="space-y-2">
+        <label class="form-control w-full max-w-xs">
+          <div class="label">
+            <span class="label-text text-gray-800">Department Name</span>
+          </div>
+          <input
+            type="text"
+            placeholder=""
+            class="input input-sm py-5 input-bordered w-full max-w-xs"
+            formControlName="name"
+          />
+          @if (f['name'].touched && f['name'].errors) {
+          <div class="label">
+            @if (f['name'].errors['required']) {
+            <span class="label-text-alt text-error"> Name is required </span>
+            }
+          </div>
+          }
+        </label>
+
+        <label class="form-control w-full max-w-xs">
+          <div class="label">
+            <span class="label-text text-gray-800">Department Code</span>
+          </div>
+          <input
+            type="text"
+            placeholder=""
+            class="input input-sm py-5 input-bordered w-full max-w-xs"
+            formControlName="code"
+          />
+          @if (f['code'].touched && f['code'].errors) {
+          <div class="label">
+            @if (f['code'].errors['required']) {
+            <span class="label-text-alt text-error"> Code is required </span>
+            } @if (f['code'].errors['incorrect']) {
+            <span class="label-text-alt text-error"> Code already exist </span>
+            }
+          </div>
+          }
+        </label>
+      </div>
+    </div>
+
+    <div class="modal-action mt-5">
+      <form method="dialog">
+        <button class="btn" (click)="form.reset()">Close</button>
+      </form>
+
+      <button type="submit" class="btn btn-primary flex gap-2 items-center">
+        <span>Add</span>
+      </button>
+    </div>
+  </form>
+</dialog>

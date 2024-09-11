@@ -1,0 +1,148 @@
+<dialog id="add-transaction" class="modal">
+  <form
+    [formGroup]="form"
+    (ngSubmit)="onSubmit()"
+    class="modal-box w-11/12 max-w-5xl"
+  >
+    <h3 class="font-bold text-gray-800 text-lg">Create Transaction</h3>
+
+    <div class="w-full grid grid-cols-2 mt-5">
+      <div class="space-y-2">
+        <label class="form-control w-full max-w-xs">
+          <div class="label">
+            <span class="label-text text-gray-800">Borrower's Name:</span>
+          </div>
+          <input
+            type="text"
+            placeholder=""
+            class="input input-sm py-5 input-bordered w-full max-w-xs"
+            formControlName="borrowerName"
+          />
+          @if (f['borrowerName'].errors && f['borrowerName'].touched) {
+          <div class="label">
+            @if (f['borrowerName'].errors['required']) {
+            <span class="label-text-alt text-error">
+              Borrower's name is required
+            </span>
+            }
+          </div>
+          }
+        </label>
+
+        <label class="form-control w-full max-w-xs">
+          <div class="label">
+            <span class="label-text text-gray-800">Borrower's ID:</span>
+          </div>
+          <input
+            type="text"
+            placeholder=""
+            class="input input-sm py-5 input-bordered w-full max-w-xs"
+            formControlName="borrowerId"
+          />
+          @if (f['borrowerId'].errors && f['borrowerId'].touched) {
+          <div class="label">
+            @if (f['borrowerId'].errors['required']) {
+            <span class="label-text-alt text-error">
+              Borrower's Id is required
+            </span>
+            }
+          </div>
+          }
+        </label>
+
+        <label class="form-control w-full max-w-xs">
+          <div class="label">
+            <span class="label-text">Device</span>
+          </div>
+          <input
+            type="text"
+            placeholder=""
+            class="input input-sm py-5 input-bordered w-full max-w-xs"
+            [value]="selectedDevice.model || ''"
+            disabled
+          />
+          <input
+            type="hidden"
+            placeholder=""
+            class="input input-sm py-5 input-bordered w-full max-w-xs"
+            formControlName="deviceId"
+          />
+          @if (f['deviceId'].errors && f['deviceId'].touched) {
+          <div class="label">
+            <span class="label-text-alt text-error">Device is required</span>
+          </div>
+          }
+
+          <button
+            type="button"
+            (click)="openSelectDevice()"
+            class="btn btn-xs flex items-center gap-2 w-1/2 mt-2"
+          >
+            <ng-icon name="matPlusOutline" class="w-5 h-5"></ng-icon>
+            <span>Select Device</span>
+          </button>
+        </label>
+      </div>
+
+      <div class="space-y-2">
+        <div class="mb-4">
+          <label class="form-control w-full max-w-xs">
+            <div class="label">
+              <span class="label-text">Department</span>
+            </div>
+            <select
+              class="select select-bordered"
+              formControlName="departmentId"
+            >
+              @for (department of departments; track $index) {
+              <option [ngValue]="department.id">
+                {{ department.code }}
+              </option>
+              }
+            </select>
+            @if (f['departmentId'].errors && f['departmentId'].touched) {
+            <div class="label">
+              <span class="label-text-alt text-error"
+                >Department is required</span
+              >
+            </div>
+            }
+
+            <button
+              type="button"
+              (click)="openAddDepartment()"
+              class="btn btn-xs flex items-center gap-2 w-1/2 mt-2"
+            >
+              <ng-icon name="matPlusOutline" class="w-5 h-5"></ng-icon>
+              <span>Add Department</span>
+            </button>
+          </label>
+        </div>
+
+        <label class="form-control w-full max-w-xs">
+          <div class="label">
+            <span class="label-text text-gray-800">Remarks:</span>
+          </div>
+          <textarea
+            placeholder="something to take note"
+            class="textarea textarea-bordered w-full max-w-xs"
+            formControlName="remarks"
+          ></textarea>
+        </label>
+      </div>
+    </div>
+
+    <div class="modal-action mt-5">
+      <form method="dialog">
+        <button class="btn" (click)="form.reset()">Close</button>
+      </form>
+
+      <button type="submit" class="btn btn-primary flex gap-2 items-center">
+        <span>Create</span>
+      </button>
+    </div>
+  </form>
+</dialog>
+
+<app-add-department (added)="getAllDepartments()" />
+<app-select-device (selectedDevice)="onSelectedDevice($event)" />

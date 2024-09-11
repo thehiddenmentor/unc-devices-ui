@@ -1,0 +1,100 @@
+<main>
+  <app-sidebar></app-sidebar>
+
+  <section class="ml-56 p-10">
+    <div class="flex items-center justify-between mb-10">
+      <app-title
+        title="Manage Devices"
+        subtitle="Manage and track your devices"
+      />
+      <button class="btn btn-primary flex items-center" (click)="handleClick()">
+        <ng-icon name="matPlusOutline" class="text-white text-lg" />
+        <span> Add Device </span>
+      </button>
+    </div>
+
+    <div class="flex items-center justify-between mb-10">
+      <select
+        class="select select-bordered w-1/4 max-w-xs"
+        [formControl]="statusForm"
+      >
+        <option selected value="">All</option>
+        <option value="AVAILABLE">Available</option>
+        <option value="NOT_AVAILABLE">Not Available</option>
+        <option value="MISSING">Missing</option>
+        <option value="DEFECTIVE">Defective</option>
+      </select>
+      <label
+        class="input input-md input-bordered flex items-center gap-2 text-gray-600"
+      >
+        <input
+          type="text"
+          class="grow focus:outline-none focus:border-transparent"
+          placeholder="Search"
+          (input)="onSearch($event)"
+        />
+        <ng-icon
+          name="matSearchOutline"
+          class="text-gray-600 w-5 h-5"
+        ></ng-icon>
+      </label>
+    </div>
+
+    @if (devices.length === 0) {
+    <app-no-result text="No Device Available" />
+    } @else {
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Model</th>
+          <th>Tag Number</th>
+          <th>Category</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (device of devices; track $index) {
+        <tr>
+          <td>{{ device.model }}</td>
+          <td>{{ device.tagNumber }}</td>
+          <td>{{ device.category.name || "N/A" }}</td>
+          <td>{{ device.status || "N/A" }}</td>
+          <td>
+            <div class="flex items-center gap-3">
+              <div
+                (click)="openViewDevice(device.id)"
+                class="flex items-center justify-center h-8 w-8 rounded-full bg-gray-200 hover:bg-gray-300 hover:cursor-pointer"
+              >
+                <ng-icon name="matRemoveRedEye" class="text-gray-800" />
+              </div>
+              <div
+                (click)="openEditDevice(device.id)"
+                class="flex items-center justify-center h-8 w-8 rounded-full bg-blue-100 hover:bg-blue-200 hover:cursor-pointer"
+              >
+                <ng-icon name="matEdit" class="text-blue-800" />
+              </div>
+              <div
+                (click)="openDeleteDevice(device.id)"
+                class="flex items-center justify-center h-8 w-8 rounded-full bg-red-100 hover:bg-red-200 hover:cursor-pointer"
+              >
+                <ng-icon name="matDelete" class="text-red-800" />
+              </div>
+            </div>
+          </td>
+
+          <app-delete-device
+            (delete)="deleteDevice(device.id)"
+            [id]="device.id"
+          />
+          <app-edit-device [device]="device" (success)="getAllDevices()" />
+          <app-view-device [device]="device" />
+        </tr>
+        }
+      </tbody>
+    </table>
+    }
+  </section>
+</main>
+
+<app-add-device (success)="getAllDevices()" />

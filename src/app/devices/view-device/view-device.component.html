@@ -1,0 +1,45 @@
+<dialog id="view-device-{{ device.id }}" class="modal">
+  <div class="modal-box w-11/12 max-w-3xl">
+    <h3 class="font-bold text-gray-800 text-lg mb-4">{{ device.model }}</h3>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Device Info</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Model</td>
+          <td>{{ device.model }}</td>
+        </tr>
+        <tr>
+          <td>Tag Number</td>
+          <td>{{ device.tagNumber }}</td>
+        </tr>
+        <tr>
+          <td>Serial Number</td>
+          <td>{{ device.serialNumber }}</td>
+        </tr>
+        <tr>
+          <td>Remarks</td>
+          <td>{{ device.remarks }}</td>
+        </tr>
+        <tr>
+          <td>Status</td>
+          <td>{{ device.status }}</td>
+        </tr>
+        <tr>
+          <td>Category</td>
+          <td>{{ device.category.name }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="modal-action mt-5">
+      <form method="dialog">
+        <button class="btn outline-none">Close</button>
+      </form>
+    </div>
+  </div>
+</dialog>

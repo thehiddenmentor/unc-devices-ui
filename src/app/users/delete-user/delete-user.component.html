@@ -1,0 +1,14 @@
+<dialog id="delete-user-{{ id }}" class="modal">
+  <div class="modal-box">
+    <h3 class="font-bold text-lg text-gray-800">Delete this user?</h3>
+    <p class="py-4 text-gray-700">You cannot undo this process</p>
+    <div class="modal-action">
+      <form method="dialog">
+        <button class="btn outline-none">Close</button>
+      </form>
+      <button type="submit" class="btn btn-primary" (click)="onDelete()">
+        <span>Delete</span>
+      </button>
+    </div>
+  </div>
+</dialog>

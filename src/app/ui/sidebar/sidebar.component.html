@@ -1,0 +1,35 @@
+<nav class="fixed h-screen w-56 bg-base-100 px-5 py-10">
+  <div class="h-full flex flex-col justify-between">
+    <div>
+      <div class="mb-10">
+        <app-logo />
+      </div>
+
+      <ul class="p-2 text-base-content space-y-2">
+        @for (item of sidebarItems; track $index) {
+        <li
+          [routerLink]="item.path"
+          routerLinkActive="bg-base-200"
+          class="flex items-center gap-3 p-2 hover:bg-base-200 hover:cursor-pointer rounded-md"
+        >
+          <ng-icon [name]="item.icon" class="text-gray-600 text-lg"></ng-icon>
+          <p class="text-gray-600 text-sm">{{ item.name }}</p>
+        </li>
+        }
+      </ul>
+    </div>
+
+    <ul class="p-2 text-base-content space-y-1">
+      <li
+        (click)="onLogout()"
+        class="flex items-center gap-3 p-2 hover:bg-base-200 hover:cursor-pointer rounded-md"
+      >
+        <ng-icon
+          name="matLogoutOutline"
+          class="text-gray-600 text-lg"
+        ></ng-icon>
+        <p class="text-gray-600 text-sm">Logout</p>
+      </li>
+    </ul>
+  </div>
+</nav>

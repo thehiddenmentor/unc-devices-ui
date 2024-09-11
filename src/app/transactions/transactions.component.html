@@ -1,0 +1,172 @@
+<main>
+  <app-sidebar></app-sidebar>
+
+  <section class="ml-56 p-10">
+    <div class="flex items-center justify-between mb-10">
+      <app-title
+        title="Transactions"
+        subtitle="View and manage all transactions"
+      />
+      <div class="flex items-center gap-3">
+        <!-- Report button that triggers the modal -->
+        <button class="btn flex items-center" (click)="openModal()">
+          <ng-icon name="matDownloadOutline" class="text-lg" />
+          <span> Report </span>
+        </button>
+        <button
+          class="btn btn-primary flex items-center"
+          (click)="handleClick()"
+        >
+          <ng-icon name="matPlusOutline" class="text-white text-lg" />
+          <span> Create Transaction </span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Modal for selecting the report period -->
+    <dialog id="period-modal" class="modal">
+      <form method="dialog" class="modal-box">
+        <h3 class="font-bold text-lg">Select Report Period</h3>
+        <div class="py-4">
+          <label class="label cursor-pointer">
+            <input
+              type="radio"
+              name="period"
+              value="day"
+              class="radio"
+              (click)="setSelectedPeriod('day')"
+            />
+            <span class="ml-2">Last Day</span>
+          </label>
+
+          <label class="label cursor-pointer">
+            <input
+              type="radio"
+              name="period"
+              value="week"
+              class="radio"
+              (click)="setSelectedPeriod('week')"
+            />
+            <span class="ml-2">Last Week</span>
+          </label>
+
+          <label class="label cursor-pointer">
+            <input
+              type="radio"
+              name="period"
+              value="month"
+              class="radio"
+              (click)="setSelectedPeriod('month')"
+            />
+            <span class="ml-2">Last Month</span>
+          </label>
+        </div>
+
+        <div class="modal-action">
+          <button class="btn" (click)="closeModal()">Cancel</button>
+          <button class="btn btn-primary" (click)="confirmPeriod()">
+            Confirm
+          </button>
+        </div>
+      </form>
+    </dialog>
+
+    <!-- Table and other content -->
+    <div class="flex items-center justify-between mb-10">
+      <!-- Tabs and search -->
+      <div role="tablist" class="tabs tabs-md tabs-boxed">
+        <a
+          role="tab"
+          class="tab text-gray-800"
+          [ngClass]="{ 'tab-active': activeTab === '' }"
+          (click)="changeActiveTab('')"
+          >All</a
+        >
+        <a
+          role="tab"
+          class="tab text-gray-800"
+          [ngClass]="{ 'tab-active': activeTab === '0' }"
+          (click)="changeActiveTab('0')"
+          >Borrowed</a
+        >
+        <a
+          role="tab"
+          class="tab text-gray-800"
+          [ngClass]="{ 'tab-active': activeTab === '1' }"
+          (click)="changeActiveTab('1')"
+          >Returned</a
+        >
+      </div>
+      <label
+        class="input input-md input-bordered flex items-center gap-2 text-gray-600"
+      >
+        <input
+          type="text"
+          class="grow focus:outline-none focus:border-transparent"
+          placeholder="Search"
+          (input)="onSearch($event)"
+        />
+        <ng-icon
+          name="matSearchOutline"
+          class="text-gray-600 w-5 h-5"
+        ></ng-icon>
+      </label>
+    </div>
+
+    @if (transactions.length === 0) {
+    <app-no-result text="No Transactions Available" />
+    } @else {
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Borrower</th>
+          <th>Device</th>
+          <th>Department</th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        @for (transaction of transactions; track $index) {
+        <tr [ngClass]="transaction.returned ? 'bg-gray-200' : ''">
+          <td>
+            <div>
+              <p class="font-semibold">{{ transaction.borrowerName }}</p>
+              <div class="flex items-center gap-1">
+                <ng-icon name="matFilter1Outline" class="text-gray-600" />
+                <p>{{ transaction.borrowerId }}</p>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div>
+              <p class="font-semibold">{{ transaction.device.model }}</p>
+              <div class="flex items-center gap-1">
+                <ng-icon name="matFilter1Outline" class="text-gray-600" />
+                <p>{{ transaction.device.tagNumber }}</p>
+              </div>
+            </div>
+          </td>
+          <td>{{ transaction.department.code }}</td>
+          <td>
+            <button
+              (click)="viewTransaction(transaction.id)"
+              class="btn btn-gray-300 hover:btn-gray-400 btn-xs"
+            >
+              details
+            </button>
+          </td>
+
+          <app-view-transaction
+            (success)="getAllTransactions()"
+            [transaction]="transaction"
+          />
+        </tr>
+        }
+      </tbody>
+    </table>
+    }
+  </section>
+</main>
+
+<app-add-transaction (success)="getAllTransactions()" />

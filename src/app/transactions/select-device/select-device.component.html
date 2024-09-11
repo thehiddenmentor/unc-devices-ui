@@ -1,0 +1,59 @@
+<dialog id="select-device" class="modal">
+  <div class="modal-box w-11/12 max-w-4xl">
+    <form method="dialog">
+      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+        ✕
+      </button>
+    </form>
+    <h3 class="font-bold text-gray-800 text-lg">Select Device</h3>
+
+    <div class="flex justify-end my-6">
+      <label
+        class="input input-md input-bordered flex items-center gap-2 text-gray-600"
+      >
+        <input
+          type="text"
+          class="grow focus:outline-none focus:border-transparent"
+          placeholder="Search"
+          (input)="onSearch($event)"
+        />
+        <ng-icon
+          name="matSearchOutline"
+          class="text-gray-600 w-5 h-5"
+        ></ng-icon>
+      </label>
+    </div>
+
+    @if (devices.length === 0) {
+    <app-no-result text="No Device Available" />
+    } @else {
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Model</th>
+          <th>Tag Number</th>
+          <th>Category</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (device of devices; track $index) {
+        <tr>
+          <td>{{ device.model }}</td>
+          <td>{{ device.tagNumber }}</td>
+          <td>{{ device.category.name }}</td>
+          <td>
+            <button
+              (click)="onSelect(device)"
+              class="btn btn-gray-300 hover:btn-gray-400 btn-xs"
+            >
+              select
+            </button>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+    }
+  </div>
+</dialog>

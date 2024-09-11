@@ -1,0 +1,103 @@
+<main>
+  <app-sidebar></app-sidebar>
+
+  <section class="ml-56 p-10">
+    <div class="flex items-center justify-between mb-10">
+      <app-title title="Dashboard" subtitle="View and analyze your data" />
+      <button
+        class="btn btn-primary flex items-center"
+        [routerLink]="['/transactions']"
+      >
+        <ng-icon name="matPlusOutline" class="text-white text-lg" />
+        <span> Create Transaction </span>
+      </button>
+    </div>
+
+    <div class="mb-4">
+      <h3 class="text-xl">
+        <span class="font-bold">{{ totalDevice }}</span> Total Devices
+      </h3>
+    </div>
+
+    <div class="mb-12 flex items-center gap-6">
+      <div class="card w-36 bg-base-100 shadow-xl">
+        <div class="card-body px-2 py-4 flex flex-col items-center">
+          <h2 class="card-title text-2xl">{{ devicesInfo.AVAILABLE }}</h2>
+          <p class="text-sm">Available Devices</p>
+        </div>
+      </div>
+      <div class="card w-36 bg-base-100 shadow-xl">
+        <div class="card-body px-2 py-4 flex flex-col items-center">
+          <h2 class="card-title text-2xl">{{ devicesInfo.NOT_AVAILABLE }}</h2>
+          <p class="text-sm">Borrowed Devices</p>
+        </div>
+      </div>
+      <div class="card w-36 bg-base-100 shadow-xl">
+        <div class="card-body px-2 py-4 flex flex-col items-center">
+          <h2 class="card-title text-2xl">{{ devicesInfo.MISSING }}</h2>
+          <p class="text-sm">Missing Devices</p>
+        </div>
+      </div>
+      <div class="card w-36 bg-base-100 shadow-xl">
+        <div class="card-body px-2 py-4 flex flex-col items-center">
+          <h2 class="card-title text-2xl">{{ devicesInfo.DEFECTIVE }}</h2>
+          <p class="text-sm">Defective Devices</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-2 mb-2">
+      <ng-icon name="matHistoryOutline" class="text-xl" />
+      <h3 class="text-xl">Recent Transactions</h3>
+    </div>
+
+    @if (transactions.length === 0) {
+    <app-no-result text="No Transactions Available" />
+    } @else {
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Borrower</th>
+          <th>Device</th>
+          <th>Department</th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        @for (transaction of transactions; track $index) {
+        <tr>
+          <td>
+            <div>
+              <p class="font-semibold">{{ transaction.borrowerName }}</p>
+              <div class="flex items-center gap-1">
+                <ng-icon name="matFilter1Outline" class="text-gray-600" />
+                <p>{{ transaction.borrowerId }}</p>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div>
+              <p class="font-semibold">{{ transaction.device.model }}</p>
+              <div class="flex items-center gap-1">
+                <ng-icon name="matFilter1Outline" class="text-gray-600" />
+                <p>{{ transaction.device.tagNumber }}</p>
+              </div>
+            </div>
+          </td>
+          <td>{{ transaction.department.code }}</td>
+          <td>
+            <button
+              [routerLink]="['/transactions']"
+              class="btn btn-gray-300 hover:btn-gray-400 btn-xs"
+            >
+              details
+            </button>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+    }
+  </section>
+</main>
